@@ -10,10 +10,10 @@ import com.google.common.collect.ImmutableSet;
 
 public class App {
     public static void main(String... args) {
-    	ImmutableSet<Person> persons = ImmutableSet.of(
-    			new Person("name1", "sername1"),
-    			new Person(null, "sername1"),
-    			new Person("name3", "sername3"));
-    	persons.forEach(System.out::println);
+        ImmutableSet<Person> persons = ImmutableSet.of(
+            new Person("name1", "sername1"),
+            new Person(null, "sername1"),
+            new Person("name3", "sername3"));
+        persons.forEach(System.out::println);
     }
 }
