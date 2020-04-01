@@ -22,7 +22,7 @@ shadowJar {
     archiveVersion.set('1.0.0')
     archiveClassifier.set('')
     manifest {
-        attributes 'Main-Class': 'ru.otus.edu.levina.App'
+        attributes 'Main-Class': 'ru.otus.edu.levina.HelloOtus'
     }
 }
 
