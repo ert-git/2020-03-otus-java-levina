@@ -1,4 +1,4 @@
-package otus;
+package ru.otus.edu.levina;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,6 +8,11 @@ import java.util.ListIterator;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * “ест основан на сравнении поведени€ DIYarrayList с поведением ArrayList 
+ * @author levina
+ *
+ */
 public class DIYarrayListTest {
 
     @Test

@@ -1,4 +1,4 @@
-package otus;
+package ru.otus.edu.levina;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -7,9 +7,16 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
+/**
+ * Список расширяется ровно на то кол-ва элементов, которое необходимо вставить.
+ * Список не выполняет проверку на модификацию другим потоком.
+ * @author levina
+ *
+ * @param <E>
+ */
 public class DIYarrayList<E> implements List<E> {
 
-    @Override
+	@Override
     public String toString() {
         return "DIYarrayList [elements=" + Arrays.toString(elements) + ", elementsCount=" + elementsCount + "]";
     }
@@ -151,6 +158,31 @@ public class DIYarrayList<E> implements List<E> {
 
     }
 
+    @Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.deepHashCode(elements);
+		result = prime * result + elementsCount;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DIYarrayList other = (DIYarrayList) obj;
+		if (!Arrays.deepEquals(elements, other.elements))
+			return false;
+		if (elementsCount != other.elementsCount)
+			return false;
+		return true;
+	}
+	
     @Override
     public boolean contains(Object o) {
         throw new UnsupportedOperationException();
