@@ -9,7 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Тест основан на сравнении поведения DIYarrayList с поведением ArrayList 
+ * РўРµСЃС‚ РѕСЃРЅРѕРІР°РЅ РЅР° СЃСЂР°РІРЅРµРЅРёРё РїРѕРІРµРґРµРЅРёСЏ DIYarrayList СЃ РїРѕРІРµРґРµРЅРёРµРј ArrayList 
  * @author levina
  *
  */
