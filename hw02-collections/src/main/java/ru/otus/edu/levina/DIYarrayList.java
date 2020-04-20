@@ -8,21 +8,36 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 /**
- * Список расширяется ровно на то кол-ва элементов, которое необходимо вставить.
- * Список не выполняет проверку на модификацию другим потоком.
+ * Список расширяется ровно на то кол-ва элементов, которое необходимо вставить. Список не выполняет проверку на модификацию другим потоком.
+ * 
  * @author levina
  *
  * @param <E>
  */
 public class DIYarrayList<E> implements List<E> {
 
-	@Override
+    private static final float DEF_GROW_FACTOR = 0.5f;
+    private static final int DEF_INIT_LENGTH = 10;
+
+    @Override
     public String toString() {
         return "DIYarrayList [elements=" + Arrays.toString(elements) + ", elementsCount=" + elementsCount + "]";
     }
 
-    private Object[] elements = {};
+    private Object[] elements;
     private int elementsCount = 0;
+    private float growFactor;
+    private int initialLength;
+
+    public DIYarrayList() {
+        this(DEF_INIT_LENGTH, DEF_GROW_FACTOR);
+    }
+
+    public DIYarrayList(int initialLength, float growFactor) {
+        this.initialLength = initialLength;
+        this.growFactor = growFactor;
+        elements = new Object[initialLength];
+    }
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
@@ -73,16 +88,29 @@ public class DIYarrayList<E> implements List<E> {
         elements[elementsCount++] = e;
         return true;
     }
+    
+    public int getRealLength() {
+        return elements.length;
+    }
 
     private boolean adaptLength(int additionalLength) {
-        int newLength = elementsCount + additionalLength;
+        int reqLength = elementsCount + additionalLength;
+        if (elements.length >= reqLength) {
+            return true;
+        }
+        reqLength = Math.max(initialLength, reqLength);
+        int curLength = elements.length;
+        // not fast and can exceed INT limit but we really want
+        // to have configurable growFactor
+        int newLength = curLength + (int) Math.floor(curLength * growFactor);
+        if (newLength < reqLength) {
+            newLength = reqLength;
+        }
         if (newLength >= Integer.MAX_VALUE) {
             System.err.println("Final array capacity exceeds Integer.MAX_VALUE");
-            return false;
+            newLength = Integer.MAX_VALUE;
         }
-        if (newLength > elements.length) {
-            elements = Arrays.copyOf(elements, newLength);
-        }
+        elements = Arrays.copyOf(elements, newLength);
         return true;
     }
 
@@ -159,30 +187,30 @@ public class DIYarrayList<E> implements List<E> {
     }
 
     @Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.deepHashCode(elements);
-		result = prime * result + elementsCount;
-		return result;
-	}
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Arrays.deepHashCode(elements);
+        result = prime * result + elementsCount;
+        return result;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		DIYarrayList other = (DIYarrayList) obj;
-		if (!Arrays.deepEquals(elements, other.elements))
-			return false;
-		if (elementsCount != other.elementsCount)
-			return false;
-		return true;
-	}
-	
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        DIYarrayList other = (DIYarrayList) obj;
+        if (!Arrays.deepEquals(elements, other.elements))
+            return false;
+        if (elementsCount != other.elementsCount)
+            return false;
+        return true;
+    }
+
     @Override
     public boolean contains(Object o) {
         throw new UnsupportedOperationException();
