@@ -27,7 +27,7 @@ public class TestRunner {
             Object clazzTestInst = TestUtils.newInstance(clazzTest);
             
             for (Method before : befores) {
-                // here we allow exceptions, because it is not testing part
+                // here we allow exceptions, because it is service part (not testing)
                 System.out.println("...Begin " + before.getName());
                 TestUtils.runMethod(before, clazzTestInst);
                 System.out.println("...Finish " + before.getName());
@@ -45,7 +45,7 @@ public class TestRunner {
             
             for (Method after : afters) {
                 System.out.println("...Begin " + after.getName());
-                // here we allow exceptions, because it is not testing part
+                // here we allow exceptions, because it is service part (not testing)
                 TestUtils.runMethod(after, clazzTestInst);
                 System.out.println("...Finish " + after.getName());
             }

@@ -22,7 +22,8 @@ public class PartyTest {
     
     @Test
     public void test_03_failed() throws Exception {
-        // fail and change system state here 
+        // change system state here (this test executes first)
+        // ...and fail
         party.join("Squirrel");
         party.join("Beaver");
         int expected = 1; // ups!
@@ -34,7 +35,7 @@ public class PartyTest {
 
     @Test
     public void test_01_before() throws Exception {
-        // check if _before was executed
+        // check if _before has been executed
         boolean expected = true;
         boolean actual = party.isReady();
         if (actual != expected) {
@@ -44,7 +45,7 @@ public class PartyTest {
     
     @Test
     public void test_02_after() throws Exception {
-        // check if _after has been executed and clear state after test_03
+        // check if _after has been executed and cleared system state after test_03
         int expected = 0;
         int actual = party.getGuestsNumber();
         if (actual != expected) {

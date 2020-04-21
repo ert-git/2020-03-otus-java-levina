@@ -19,7 +19,7 @@ public class TestUtils {
                 return ctor.newInstance();
             }
         }
-        throw new InstantiationException("You have to declare default (no args) costructor");
+        throw new InstantiationException("You have to declare default (no args) constructor");
     }
 
     public static Throwable runTestMethod(Method method, Object clazzTestInst) {
