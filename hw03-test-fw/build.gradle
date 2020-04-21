@@ -1,0 +1,10 @@
+plugins {
+    // Apply the java plugin to add support for Java
+    id 'java'
+}
+
+tasks.withType(JavaCompile) {
+    options.with {
+        encoding = 'UTF-8'
+    }
+}
