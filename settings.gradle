@@ -2,3 +2,4 @@
 
 rootProject.name = 'otus-edu'
 include 'hw01-gradle'
+include 'hw03-test-fw'
