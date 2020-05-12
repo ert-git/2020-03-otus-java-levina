@@ -2,5 +2,9 @@
 
 rootProject.name = 'otus-edu'
 include 'hw01-gradle'
+<<<<<<< HEAD
 include 'hw02-collections'
 include 'hw03-test-fw'
+=======
+include 'hw02-collections'
+>>>>>>> a36d479e7f7fd7908209e3a397cc3387373bc97f
