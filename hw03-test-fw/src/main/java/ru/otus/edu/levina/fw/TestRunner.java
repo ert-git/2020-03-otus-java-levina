@@ -8,11 +8,10 @@ import java.util.List;
 import ru.otus.edu.levina.fw.annotations.After;
 import ru.otus.edu.levina.fw.annotations.Before;
 import ru.otus.edu.levina.fw.annotations.Test;
-import ru.otus.edu.levina.tests.PartyTest;
 
 public class TestRunner {
 
-    public static void runTest(Class<PartyTest> clazzTest)
+    public static void runTest(Class<?> clazzTest)
             throws IllegalAccessException, InvocationTargetException, InstantiationException {
         
         List<Method> tests = TestUtils.getAnnotatedMethods(clazzTest, Test.class);
