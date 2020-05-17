@@ -16,7 +16,16 @@ public class GetMoneyResponse {
     public static final int NO_SUIT_NOM = 3;
     public static final int NOT_ENOUGHT_NOM = 4;
 
+    /**
+     * response code
+     */
     private int code;
+    /**
+     * code description (may be null, optional)
+     */
     private String descr;
+    /**
+     * your money
+     */
     private Map<Banknote, Integer> banknotes;
 }

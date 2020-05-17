@@ -66,7 +66,7 @@ public class CellImpl implements Cell {
         // Здесь бы следовало зарезервировать деньги, а "выдать" только
         // после того, как транзакция будет утверждена.
         // Но не хочется переусложнять.
-        available.getAndAdd(-min);
+        available.addAndGet(-min);
         return min;
     }
 

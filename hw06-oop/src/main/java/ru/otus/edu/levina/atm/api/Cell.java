@@ -25,14 +25,14 @@ public interface Cell {
     int getAvailableBanknoteCount();
 
     /**
-     * Puts a banknote into the cell
+     * Puts a number banknotes into the cell
      * 
      * @param bn
      *            a banknote
      * @param count
-     *            count of banknotes
-     * @throws AtmException
-     *             if the banknote is not valid (has not suitable nominal, etc)
+     *            quantity of banknotes
+     * @throws IllegalArgumentException
+     *             if the banknote is not valid (has a not suitable nominal, etc)
      */
     void process(Banknote bn, int quantity) throws IllegalArgumentException;
 
