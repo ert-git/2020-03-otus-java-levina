@@ -21,33 +21,25 @@ public class Demo {
         Nominal B1000 = new Nominal(1000);
 
         List<Cell> cells = new ArrayList<>();
-        cells.add(new CellImpl(B100));
-        cells.add(new CellImpl(B500));
-        cells.add(new CellImpl(B1000));
+        cells.add(new CellImpl(B100, 10));
+        cells.add(new CellImpl(B500, 10));
+        cells.add(new CellImpl(B1000, 10));
         ATM a = new ATMImpl(cells);
-        
+
         Map<Banknote, Integer> batch = new HashMap<>();
         batch.put(new Banknote(B100), 3);
         batch.put(new Banknote(B500), 2);
         batch.put(new Banknote(B200), 1);
         batch.put(new Banknote(B1000), 3);
         a.putMoney(batch);
-        System.out.println("return: " + batch);
-        System.out.println("total: " + a.getAvailableMoney());
+        System.out.println("PUT: rest is: " + batch);
+        System.out.println("ATM available: " + a.getAvailableMoney());
 
-        try {
-            System.out.println(a.getMoney(1700));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println("total: " + a.getAvailableMoney());
+        System.out.println("GET: " + a.getMoney(1700));
+        System.out.println("ATM available: " + a.getAvailableMoney());
 
-        try {
-            System.out.println(a.getMoney(300));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println("total: " + a.getAvailableMoney());
-        
+        System.out.println("GET: " + a.getMoney(300));
+        System.out.println("ATM available: " + a.getAvailableMoney());
+
     }
 }
