@@ -5,7 +5,7 @@ import java.util.Map;
 public interface ATM {
  
     /**
-     * Puts suitable banknotes into ATM and removes them from source batch
+     * Puts suitable banknotes into ATM and updates their quantity in the source batch
      * 
      * @param batch
      *            batch of banknotes
