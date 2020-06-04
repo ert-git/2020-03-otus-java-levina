@@ -5,3 +5,5 @@ include 'hw01-gradle'
 include 'hw02-collections'
 include 'hw03-test-fw'
 include 'hw05-asm'
+include 'hw06-oop'
+
