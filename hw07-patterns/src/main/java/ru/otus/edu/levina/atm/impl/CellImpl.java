@@ -27,9 +27,6 @@ public class CellImpl implements Cell {
     @Override
     public void reset() {
         state = memento.getState();
-        if (this.nextCell != null) {
-            this.nextCell.reset();
-        }
     }
 
     @Override

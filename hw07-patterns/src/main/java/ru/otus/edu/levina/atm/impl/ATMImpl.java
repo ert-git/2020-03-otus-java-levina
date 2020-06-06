@@ -65,7 +65,7 @@ public class ATMImpl implements ATM {
     public void reset() {
         // ----------------- memento pattern
         state = memento.getState();
-        firstCell.reset();
+        cells.forEach(cell -> cell.reset());
     }
 
     @Override
