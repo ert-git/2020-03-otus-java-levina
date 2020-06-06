@@ -4,7 +4,7 @@ import ru.otus.edu.levina.atm.api.ATM;
 import ru.otus.edu.levina.atm.api.cmd.CmdResponse;
 import ru.otus.edu.levina.atm.api.cmd.Command;
 
-public class GetRestCmd extends AbstrCmd implements Command {
+public class GetRestCmd extends AbstractCmd implements Command {
 
     @Override
     protected CmdResponse executeInternal(ATM atm) {
@@ -12,7 +12,7 @@ public class GetRestCmd extends AbstrCmd implements Command {
     }
 
     @Override
-    protected CmdResponse fail(ATM atm, Throwable e) {
+    protected CmdResponse fail(ATM atm, Exception e) {
         return new GetRestCmdResponse(cmdId, atm.getId(), false, e.getMessage(), null);
     }
 

@@ -20,7 +20,7 @@ public interface ATM {
     void addCmdListener(CmdResponseListener listener);
     void removeCmdListener(CmdResponseListener listener);
     
-    Integer getId();
+    int getId();
     
     /**
      * resets the state to initial values (Memento pattern)

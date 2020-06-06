@@ -22,10 +22,10 @@ public class Demo {
         batch.put(new Banknote(Nominal.B1000), 3);
 
         List<Cell> cells = new ArrayList<>();
-        cells.add(new CellImpl(Nominal.B100, 10));
-        cells.add(new CellImpl(Nominal.B500, 10));
-        cells.add(new CellImpl(Nominal.B1000, 10));
-        ATM a = new ATMImpl(1, cells, batch);
+        cells.add(new CellImpl(Nominal.B100, 10, 3));
+        cells.add(new CellImpl(Nominal.B500, 10, 2));
+        cells.add(new CellImpl(Nominal.B1000, 10, 3));
+        ATM a = new ATMImpl(1, cells);
 
         Map<Banknote, Integer> rest = a.putMoney(batch);
         System.out.println("PUT: rest is: " + rest);

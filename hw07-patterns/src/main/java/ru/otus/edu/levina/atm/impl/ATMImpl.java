@@ -1,10 +1,9 @@
 package ru.otus.edu.levina.atm.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import lombok.Getter;
@@ -23,17 +22,17 @@ import ru.otus.edu.levina.atm.api.responses.SuccessGetMoneyResponse;
 
 public class ATMImpl implements ATM {
     @Getter
-    private final Integer id;
+    private final int id;
     private final List<Cell> cells;
     private final int minNominal;
 
     private AtmMemento memento;
-    private Set<CmdResponseListener> listeners = new HashSet<>();
+    private List<CmdResponseListener> listeners = new ArrayList<>();
     private AtmState state;
     
     private Cell firstCell;
 
-    public ATMImpl(Integer id, List<Cell> cells, Map<Banknote, Integer> batch) {
+    public ATMImpl(int id, List<Cell> cells) {
         this.id = id;
         this.cells = cells.stream()
                 .sorted((c1, c2) -> c2.getNominal().compareTo(c1.getNominal()))
@@ -42,7 +41,6 @@ public class ATMImpl implements ATM {
             cells.get(i).setNext(cells.get(i + 1));
         }
         firstCell = cells.get(0);
-        firstCell.process(batch);
         minNominal = cells.stream().mapToInt(c -> c.getNominal().getValue()).min().getAsInt();
         state = new AtmState(0);
         memento = new AtmMemento(new AtmState(state));
@@ -67,6 +65,7 @@ public class ATMImpl implements ATM {
     public void reset() {
         // ----------------- memento pattern
         state = memento.getState();
+        firstCell.reset();
     }
 
     @Override

@@ -33,17 +33,10 @@ public class AtmManFuncTest {
     @Before
     public void before() {
         List<Cell> cells = new ArrayList<>();
-        cells.add(new CellImpl(Nominal.B100, CELL_CAPACITY));
-        cells.add(new CellImpl(Nominal.B500, CELL_CAPACITY));
-        cells.add(new CellImpl(Nominal.B1000, CELL_CAPACITY));
-
-        Map<Banknote, Integer> batch = new HashMap<>();
-        batch.put(new Banknote(Nominal.B100), INIT_B100);
-        batch.put(new Banknote(Nominal.B500), INIT_B500);
-        batch.put(new Banknote(Nominal.B1000), INIT_B1000);
-
-        atm = new ATMImpl(1, cells, batch);
-
+        cells.add(new CellImpl(Nominal.B100, CELL_CAPACITY, INIT_B100));
+        cells.add(new CellImpl(Nominal.B500, CELL_CAPACITY, INIT_B500));
+        cells.add(new CellImpl(Nominal.B1000, CELL_CAPACITY, INIT_B1000));
+        atm = new ATMImpl(1, cells);
     }
 
     @Test

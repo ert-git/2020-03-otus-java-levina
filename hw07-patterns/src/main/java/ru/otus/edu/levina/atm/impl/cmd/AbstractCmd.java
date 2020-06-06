@@ -9,17 +9,17 @@ import ru.otus.edu.levina.atm.api.cmd.CmdResponse;
 import ru.otus.edu.levina.atm.api.cmd.Command;
 
 @Data
-public abstract class AbstrCmd implements Command {
+public abstract class AbstractCmd implements Command {
 
     protected final String cmdId;
     protected final Date created;
     
-    public AbstrCmd() {
+    public AbstractCmd() {
         cmdId = genCmdId();
         created = new Date();
     }
 
-    protected String genCmdId() {
+    private String genCmdId() {
         return UUID.randomUUID().toString();
     }
     
@@ -36,5 +36,5 @@ public abstract class AbstrCmd implements Command {
     }
     
     protected abstract CmdResponse executeInternal(ATM atm);
-    protected abstract CmdResponse fail(ATM atm, Throwable e);
+    protected abstract CmdResponse fail(ATM atm, Exception e);
 }

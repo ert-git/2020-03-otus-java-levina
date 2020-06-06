@@ -16,6 +16,7 @@ public interface Cell {
     void setNext(Cell atm);
     Cell getNext();
     
+    void reset();
     
     /**
      * Returns a nominal of this cell
