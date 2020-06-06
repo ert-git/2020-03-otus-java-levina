@@ -2,6 +2,7 @@ package ru.otus.edu.levina.serialization.json;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -10,12 +11,12 @@ import java.util.function.BiFunction;
 import java.util.function.UnaryOperator;
 
 public class MyGson {
- 
+
     private static final char COLON = ':';
     private static final char QUOTE = '"';
     private static final char COMMA = ',';
 
-    private static final Integer MAX_RECURSION_DEPTH = 5;
+    public static final Integer MAX_RECURSION_DEPTH = 5;
 
     private final ThreadLocal<Integer> threadLocalScope = new ThreadLocal<>();
 
@@ -27,80 +28,109 @@ public class MyGson {
         threadLocalScope.set(len);
     }
 
-    private Map<String, BiFunction<String, Object, UnaryOperator<StringBuilder>>> map = new HashMap<>();
+    private Map<Class<?>, BiFunction<String, Object, UnaryOperator<StringBuilder>>> typeSerializationMap = new HashMap<>();
 
     public MyGson() {
-        // use strings to avoid coping for primitive and wrappers (like Double/double)
-        map.put("string", (name, val) -> buf -> toJsonString(name, val, buf));
-        map.put("int", (name, val) -> buf -> toJsonNum(name, val, buf));
-        map.put("long", (name, val) -> buf -> toJsonNum(name, val, buf));
-        map.put("byte", (name, val) -> buf -> toJsonNum(name, val, buf));
-        map.put("float", (name, val) -> buf -> toJsonNum(name, val, buf));
-        map.put("double", (name, val) -> buf -> toJsonNum(name, val, buf));
-        map.put("boolean", (name, val) -> buf -> toJsonNum(name, val, buf));
-        map.put("integer", (name, val) -> buf -> toJsonNum(name, val, buf));
+        typeSerializationMap.put(String.class, (name, val) -> buf -> toJsonString(name, val, buf));
+        typeSerializationMap.put(char.class, (name, val) -> buf -> toJsonString(name, val, buf));
+        typeSerializationMap.put(Character.class, (name, val) -> buf -> toJsonString(name, val, buf));
+        typeSerializationMap.put(short.class, (name, val) -> buf -> toJsonNum(name, val, buf));
+        typeSerializationMap.put(Short.class, (name, val) -> buf -> toJsonNum(name, val, buf));
+        typeSerializationMap.put(int.class, (name, val) -> buf -> toJsonNum(name, val, buf));
+        typeSerializationMap.put(Integer.class, (name, val) -> buf -> toJsonNum(name, val, buf));
+        typeSerializationMap.put(long.class, (name, val) -> buf -> toJsonNum(name, val, buf));
+        typeSerializationMap.put(Long.class, (name, val) -> buf -> toJsonNum(name, val, buf));
+        typeSerializationMap.put(byte.class, (name, val) -> buf -> toJsonNum(name, val, buf));
+        typeSerializationMap.put(Byte.class, (name, val) -> buf -> toJsonNum(name, val, buf));
+        typeSerializationMap.put(float.class, (name, val) -> buf -> toJsonNum(name, val, buf));
+        typeSerializationMap.put(Float.class, (name, val) -> buf -> toJsonNum(name, val, buf));
+        typeSerializationMap.put(double.class, (name, val) -> buf -> toJsonNum(name, val, buf));
+        typeSerializationMap.put(Double.class, (name, val) -> buf -> toJsonNum(name, val, buf));
+        typeSerializationMap.put(boolean.class, (name, val) -> buf -> toJsonNum(name, val, buf));
+        typeSerializationMap.put(Boolean.class, (name, val) -> buf -> toJsonNum(name, val, buf));
     }
 
-    
-    public String toJson(Object any) throws RuntimeException {
+    public String toJson(Object any) throws JsonSerializationException {
         if (any == null) {
-            return null;
+            return "null";
         }
         try {
             setRecursionDepth(0);
-            StringBuilder buf = new StringBuilder();
-            serializeObject(null, any, buf);
+            StringBuilder buf = new StringBuilder(serializeObject(null, any));
             deleteLastComma(buf);
             return buf.toString();
-        } catch (RuntimeException e) {
+        } catch (JsonSerializationException e) {
             throw e;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new JsonSerializationException(e);
         }
     }
 
-    private void serializeObject(String name, Object val, StringBuilder buf) throws IllegalAccessException {
+    private String serializeObject(String name, Object val) throws IllegalAccessException, JsonSerializationException {
         if (val == null) {
-            return;
+            return "";
         }
         if (getRecursionDepth() > MAX_RECURSION_DEPTH) {
-            throw new RuntimeException("Recursion overflow: max = " + MAX_RECURSION_DEPTH);
+            throw new JsonSerializationException("Recursion overflow: max = " + MAX_RECURSION_DEPTH);
         }
+        StringBuilder buf = new StringBuilder();
         Class<?> valType = val.getClass();
-        String valTypeName = valType.getSimpleName().toLowerCase();
-        if (map.containsKey(valTypeName)) {
-            map.get(valTypeName).apply(name, val).apply(buf);
+        if (typeSerializationMap.containsKey(valType)) {
+            typeSerializationMap.get(valType).apply(name, val).apply(buf);
         } else if (valType.isArray()) {
-            putName(name, buf);
-            buf.append("[");
-            int len = Array.getLength(val);
-            for (int i = 0; i < len; i++) {
-                serializeObject(null, Array.get(val, i), buf);
-            }
-            deleteLastComma(buf);
-            buf.append("],");
+            buf.append(serializeArray(name, val));
         } else if (val instanceof Collection) {
-            putName(name, buf);
-            buf.append("[");
-            Collection col = (Collection) val;
-            for (Iterator iterator = col.iterator(); iterator.hasNext();) {
-                serializeObject(null, iterator.next(), buf);
-            }
-            deleteLastComma(buf);
-            buf.append("],");
+            buf.append(serializeCollection(name, val));
         } else {
-            setRecursionDepth(getRecursionDepth() + 1);
-            putName(name, buf);
-            buf.append("{");
-            Field[] fields = valType.getDeclaredFields();
-            for (Field f : fields) {
-                f.setAccessible(true);
-                serializeObject(f.getName(), f.get(val), buf);
-            }
-            deleteLastComma(buf);
-            buf.append("},");
-            setRecursionDepth(getRecursionDepth() - 1);
+            buf.append(serializeAny(name, val, valType));
         }
+        return buf.toString();
+    }
+
+    private StringBuilder serializeAny(String name, Object val, Class<?> valType)
+            throws IllegalAccessException, JsonSerializationException {
+        StringBuilder buf = new StringBuilder();
+        setRecursionDepth(getRecursionDepth() + 1);
+        putName(name, buf);
+        buf.append("{");
+        Field[] fields = valType.getDeclaredFields();
+        for (Field f : fields) {
+            f.setAccessible(true);
+            if (!isSerializable(f)) {
+                continue;
+            }
+            buf.append(serializeObject(f.getName(), f.get(val)));
+        }
+        deleteLastComma(buf);
+        buf.append("},");
+        setRecursionDepth(getRecursionDepth() - 1);
+        return buf;
+    }
+
+    private StringBuilder serializeCollection(String name, Object val) throws IllegalAccessException, JsonSerializationException {
+        StringBuilder buf = new StringBuilder();
+        putName(name, buf);
+        buf.append("[");
+        Collection col = (Collection) val;
+        for (Iterator iterator = col.iterator(); iterator.hasNext();) {
+            buf.append(serializeObject(null, iterator.next()));
+        }
+        deleteLastComma(buf);
+        buf.append("],");
+        return buf;
+    }
+
+    private StringBuilder serializeArray(String name, Object val) throws IllegalAccessException, JsonSerializationException {
+        StringBuilder buf = new StringBuilder();
+        putName(name, buf);
+        buf.append("[");
+        int len = Array.getLength(val);
+        for (int i = 0; i < len; i++) {
+            buf.append(serializeObject(null, Array.get(val, i)));
+        }
+        deleteLastComma(buf);
+        buf.append("],");
+        return buf;
     }
 
     private void deleteLastComma(StringBuilder buf) {
@@ -131,4 +161,9 @@ public class MyGson {
         return buf;
     }
 
+    private static boolean isSerializable(Field f) {
+        return (f.getModifiers() & Modifier.TRANSIENT) != Modifier.TRANSIENT
+                && (f.getModifiers() & Modifier.STATIC) != Modifier.STATIC;
+    }
+    
 }

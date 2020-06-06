@@ -11,10 +11,20 @@ import ru.otus.edu.levina.serialization.model.Person;
 public class Demo {
     public static void main(String[] args) throws Exception {
         Gson gson = new Gson();
+        System.out.println(gson.newBuilder().setPrettyPrinting().create().toJson(new Catalog("1")));
+        System.out.println(gson.newBuilder().setPrettyPrinting().create().toJson((short) 2f));
+        System.out.println(gson.newBuilder().setPrettyPrinting().create().toJson(null));
+        System.out.println(gson.newBuilder().setPrettyPrinting().create().toJson('b'));
+
+        System.out.println(new MyGson().toJson(new Catalog("1")));
+        System.out.println(new MyGson().toJson((short) 2f));
+        System.out.println(new MyGson().toJson(null));
+        System.out.println(new MyGson().toJson('b'));
+
         Catalog c1 = new Catalog("c1");
         c1.setPersons(new ArrayList<Person>());
         c1.getPersons().add(new Person(null, "p1", 33, true, System.currentTimeMillis(),
-                0.9f, Double.MAX_VALUE, c1));
+                0.9f, Double.MAX_VALUE, null));
         c1.getPersons().add(new Person(1, "p2", 13, false, System.currentTimeMillis(),
                 0.5f, Double.MAX_VALUE, null));
         c1.setCode("anycode".getBytes());

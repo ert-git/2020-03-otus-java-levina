@@ -19,7 +19,7 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
 
-    testImplementation('junit:junit')
+    testImplementation('org.junit.jupiter:junit-jupiter-engine:5.1.0')
 
 }
 
