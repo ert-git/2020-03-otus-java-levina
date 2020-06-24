@@ -5,16 +5,16 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
-import ru.otus.edu.levina.jdbc.mapper.EntityClassMetaData;
 import ru.otus.edu.levina.jdbc.tools.ReflectionHelper;
+import ru.otus.jdbc.mapper.EntityClassMetaData;
 
 public class EntityClassMetaDataImpl<T> implements EntityClassMetaData<T> {
 
-    private String name;
-    private List<Field> fields;
-    private Field idField;
-    private List<Field> notIdFields;
-    private Constructor<T> constructor;
+    private final String name;
+    private final List<Field> fields;
+    private final Field idField;
+    private final List<Field> notIdFields;
+    private final Constructor<T> constructor;
 
     public EntityClassMetaDataImpl(Class<T> clazz) {
         name = clazz.getSimpleName();

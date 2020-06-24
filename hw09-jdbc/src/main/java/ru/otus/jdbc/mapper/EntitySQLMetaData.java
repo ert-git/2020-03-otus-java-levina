@@ -1,5 +1,4 @@
-package ru.otus.edu.levina.jdbc.mapper;
-
+package ru.otus.jdbc.mapper;
 
 public interface EntitySQLMetaData {
     String getSelectAllSql();

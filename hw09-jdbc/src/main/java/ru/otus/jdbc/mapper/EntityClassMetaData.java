@@ -1,4 +1,4 @@
-package ru.otus.edu.levina.jdbc.mapper;
+package ru.otus.jdbc.mapper;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
