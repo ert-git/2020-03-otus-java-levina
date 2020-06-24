@@ -69,7 +69,7 @@ public class JdbcMapperImpl<T> implements JdbcMapper<T> {
                     id, rs -> {
                         try {
                             if (rs.next()) {
-                                T newInstance = clazz.getConstructor().newInstance();
+                                T newInstance = classMetaData.getConstructor().newInstance();
                                 List<Field> fields = classMetaData.getAllFields();
                                 for (Field field : fields) {
                                     field.setAccessible(true);
