@@ -1,8 +1,8 @@
 package ru.otus.core.service;
 
-import ru.otus.core.model.User;
-
 import java.util.Optional;
+
+import ru.otus.edu.levina.jdbc.model.User;
 
 public interface DBServiceUser {
 

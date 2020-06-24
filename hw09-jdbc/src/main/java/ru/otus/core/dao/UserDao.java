@@ -2,8 +2,8 @@ package ru.otus.core.dao;
 
 import java.util.Optional;
 
-import ru.otus.core.model.User;
 import ru.otus.core.sessionmanager.SessionManager;
+import ru.otus.edu.levina.jdbc.model.User;
 
 public interface UserDao {
     Optional<User> findById(long id);

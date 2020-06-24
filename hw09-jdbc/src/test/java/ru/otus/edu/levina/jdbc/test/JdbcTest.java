@@ -18,6 +18,7 @@ import ru.otus.edu.levina.jdbc.impl.JdbcMapperImpl;
 import ru.otus.edu.levina.jdbc.model.Account;
 import ru.otus.edu.levina.jdbc.model.User;
 import ru.otus.h2.DataSourceH2;
+import ru.otus.jdbc.DbExecutorImpl;
 import ru.otus.jdbc.mapper.EntityClassMetaData;
 import ru.otus.jdbc.mapper.EntitySQLMetaData;
 import ru.otus.jdbc.mapper.JdbcMapper;
@@ -53,8 +54,8 @@ public class JdbcTest {
         userSqlMeta = new EntitySQLMetaDataImpl(userMeta);
         accSqlMeta = new EntitySQLMetaDataImpl(accMeta);
 
-        userMapper = new JdbcMapperImpl<>(userMeta, userSqlMeta, sessionManager);
-        accMapper = new JdbcMapperImpl<>(accMeta, accSqlMeta, sessionManager);
+        userMapper = new JdbcMapperImpl<>(userMeta, userSqlMeta, sessionManager, new DbExecutorImpl<>());
+        accMapper = new JdbcMapperImpl<>(accMeta, accSqlMeta, sessionManager, new DbExecutorImpl<>());
     }
 
     @AfterAll

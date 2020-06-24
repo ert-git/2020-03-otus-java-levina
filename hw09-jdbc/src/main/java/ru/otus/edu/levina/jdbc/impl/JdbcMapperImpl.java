@@ -22,12 +22,12 @@ public class JdbcMapperImpl<T> implements JdbcMapper<T> {
     private DbExecutor<T> executor;
     private SessionManager sessionManager;
 
-    public JdbcMapperImpl(EntityClassMetaData<T> classMetaData, EntitySQLMetaData sqlMetaData, SessionManager sessionManager) {
+    public JdbcMapperImpl(EntityClassMetaData<T> classMetaData, EntitySQLMetaData sqlMetaData, SessionManager sessionManager, DbExecutorImpl<T> dbExecutor) {
         validate(classMetaData);
         this.sessionManager = sessionManager;
         this.classMetaData = classMetaData;
         this.sqlMetaData = sqlMetaData;
-        this.executor = new DbExecutorImpl<T>();
+        this.executor = dbExecutor;
     }
 
     @Override
