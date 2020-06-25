@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import ru.otus.core.sessionmanager.SessionManager;
 import ru.otus.edu.levina.jdbc.tools.ReflectionHelper;
 import ru.otus.jdbc.DbExecutor;
-import ru.otus.jdbc.DbExecutorImpl;
 import ru.otus.jdbc.mapper.EntityClassMetaData;
 import ru.otus.jdbc.mapper.EntitySQLMetaData;
 import ru.otus.jdbc.mapper.JdbcMapper;
@@ -22,7 +21,7 @@ public class JdbcMapperImpl<T> implements JdbcMapper<T> {
     private DbExecutor<T> executor;
     private SessionManager sessionManager;
 
-    public JdbcMapperImpl(EntityClassMetaData<T> classMetaData, EntitySQLMetaData sqlMetaData, SessionManager sessionManager, DbExecutorImpl<T> dbExecutor) {
+    public JdbcMapperImpl(EntityClassMetaData<T> classMetaData, EntitySQLMetaData sqlMetaData, SessionManager sessionManager, DbExecutor<T> dbExecutor) {
         validate(classMetaData);
         this.sessionManager = sessionManager;
         this.classMetaData = classMetaData;
@@ -34,15 +33,12 @@ public class JdbcMapperImpl<T> implements JdbcMapper<T> {
     public void insert(T obj) {
         String sql = sqlMetaData.getInsertSql();
         try {
-            sessionManager.beginSession();
             long id = executor.executeInsert(sessionManager.getCurrentSession().getConnection(), sql,
                     ReflectionHelper.getFieldsValues(classMetaData.getFieldsWithoutId(), obj));
             classMetaData.getIdField().set(obj, id);
-            sessionManager.commitSession();
             log.debug("create: inserted id = {} for {}", id, obj);
         } catch (Exception e) {
             log.error("create failed for {}", obj, e);
-            sessionManager.rollbackSession();
         }
     }
 
@@ -50,15 +46,12 @@ public class JdbcMapperImpl<T> implements JdbcMapper<T> {
     public void update(T obj) {
         String sql = sqlMetaData.getUpdateSql();
         try {
-            sessionManager.beginSession();
             int rowCount = executor.executeUpdate(sessionManager.getCurrentSession().getConnection(), sql,
                     ReflectionHelper.getFieldsValues(classMetaData.getFieldsWithoutId(), obj),
                     classMetaData.getIdField().get(obj));
-            sessionManager.commitSession();
             log.debug("update: updated {} rows for {}", rowCount, obj);
         } catch (Exception e) {
             log.error("update failed for {}", obj, e);
-            sessionManager.rollbackSession();
         }
     }
 
