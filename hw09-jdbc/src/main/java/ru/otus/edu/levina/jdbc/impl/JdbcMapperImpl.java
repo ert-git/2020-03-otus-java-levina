@@ -15,11 +15,11 @@ import ru.otus.jdbc.mapper.JdbcMapper;
 @Slf4j
 public class JdbcMapperImpl<T> implements JdbcMapper<T> {
 
-    private EntityClassMetaData<T> classMetaData;
-    private EntitySQLMetaData sqlMetaData;
+    private final EntityClassMetaData<T> classMetaData;
+    private final EntitySQLMetaData sqlMetaData;
 
-    private DbExecutor<T> executor;
-    private SessionManager sessionManager;
+    private final DbExecutor<T> executor;
+    private final SessionManager sessionManager;
 
     public JdbcMapperImpl(EntityClassMetaData<T> classMetaData, EntitySQLMetaData sqlMetaData, SessionManager sessionManager, DbExecutor<T> dbExecutor) {
         validate(classMetaData);
