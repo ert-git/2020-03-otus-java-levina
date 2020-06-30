@@ -33,9 +33,9 @@ public class User {
     @Column
     private int age;
     
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PhoneDataSet> phones = new ArrayList<>();
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private AddressDataSet address;
 
     public User(String name, int age, AddressDataSet address, List<PhoneDataSet> phones) {
