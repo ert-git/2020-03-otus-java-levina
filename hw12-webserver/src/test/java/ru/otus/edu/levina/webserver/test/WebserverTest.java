@@ -28,7 +28,7 @@ import ru.otus.edu.levina.hibernate.model.PhoneDataSet;
 import ru.otus.edu.levina.hibernate.model.User;
 import ru.otus.server.UsersWebServer;
 import ru.otus.server.UsersWebServerWithFilterBasedSecurity;
-import ru.otus.server.utils.WebServerHelper;
+import ru.otus.server.utils.HttpUrlConnectionHelper;
 import ru.otus.services.DbServiceUser;
 import ru.otus.services.DbServiceUserImpl;
 import ru.otus.services.TemplateProcessor;
@@ -94,7 +94,7 @@ public class WebserverTest {
         connection.getOutputStream().write((new Gson().toJson(user)).getBytes());
         responseCode = connection.getResponseCode();
         assertEquals(HttpURLConnection.HTTP_OK, responseCode);
-        String json = WebServerHelper.readInput(connection.getInputStream());
+        String json =HttpUrlConnectionHelper.readResponseFromConnection(connection);
         User newUser = gson.fromJson(json, User.class);
         assertEquals(user.getLogin(), newUser.getLogin());
         assertEquals(user.getName(), newUser.getName());
@@ -105,7 +105,7 @@ public class WebserverTest {
         connection.setRequestProperty(COOKIE_HEADER, String.format("%s=%s", jSessionIdCookie.getName(), jSessionIdCookie.getValue()));
         responseCode = connection.getResponseCode();
         assertEquals(HttpURLConnection.HTTP_OK, responseCode);
-        json = WebServerHelper.readInput(connection.getInputStream());
+        json = HttpUrlConnectionHelper.readResponseFromConnection(connection);
         newUser = gson.fromJson(json, User.class);
         assertEquals(user.getLogin(), newUser.getLogin());
         assertEquals(user.getName(), newUser.getName());
@@ -116,7 +116,7 @@ public class WebserverTest {
         connection.setRequestProperty(COOKIE_HEADER, String.format("%s=%s", jSessionIdCookie.getName(), jSessionIdCookie.getValue()));
         responseCode = connection.getResponseCode();
         assertEquals(HttpURLConnection.HTTP_OK, responseCode);
-        json = WebServerHelper.readInput(connection.getInputStream());
+        json = HttpUrlConnectionHelper.readResponseFromConnection(connection);
         User[] users = gson.fromJson(json, User[].class);
         assertEquals(2, users.length);
         assertEquals(ADMIN.getLogin(), users[0].getLogin());
