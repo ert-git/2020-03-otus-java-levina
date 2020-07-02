@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Пользователи</title>
+<script>
+        function addUser() {
+          const user = JSON.stringify({
+                name: document.getElementById('userNameTextBox').value,
+                login: document.getElementById('userLoginTextBox').value,
+                password: document.getElementById('userPasswordTextBox').value
+            });
+            fetch('/api/users', {
+              method: "POST",
+              body: user,
+              headers: {
+                'Content-Type': 'application/json'
+              },
+            })
+            .then(response => {console.log(response); window.location.reload()})
+            ;
+        }
+    </script>
+</head>
+
+<body>
+    <div>
+        <h4>Добавить пользователя</h4>
+        <input id="userNameTextBox" placeholder="Имя" type="text"> 
+        <input id="userLoginTextBox" placeholder="Логин" type="text">
+        <input id="userPasswordTextBox" placeholder="Пароль" type="text">
+        <button onclick="addUser()">Добавить</button>
+    </div>
+    <div>
+        <h4>Список пользователей</h4>
+        <table style="width: 400px" border="1">
+            <thead>
+                <tr>
+                    <td style="width: 50px">Id</td>
+                    <td style="width: 150px">Имя</td>
+                    <td style="width: 100px">Логин</td>
+                    <td style="width: 100px">Пароль</td>
+                </tr>
+            </thead>
+            <tbody id="userDataContainer">
+                <#list users as user>
+                <tr>
+                    <td>${user.id}</td>
+                    <td>${user.name}</td>
+                    <td>${user.login}</td>
+                    <td>${user.password}</td>
+                </tr>
+                </#list>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
