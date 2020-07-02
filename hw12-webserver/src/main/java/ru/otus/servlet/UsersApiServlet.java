@@ -46,7 +46,8 @@ public class UsersApiServlet extends HttpServlet {
             }
         }
         try {
-            Object data = id != null ? userService.getUser(id).orElseThrow(NoSuchElementException::new)
+            Object data = id != null 
+                    ? userService.getUser(id).orElseThrow(NoSuchElementException::new)
                     : userService.getAllUsers();
             sendResponse(response, data);
         } catch (NoSuchElementException e) {

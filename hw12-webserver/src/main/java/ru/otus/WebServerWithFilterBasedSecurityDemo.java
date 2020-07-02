@@ -31,7 +31,7 @@ import ru.otus.services.UserAuthServiceImpl;
     http://localhost:8080/users
 
     // REST сервис
-    http://localhost:8080/api/user/3
+    http://localhost:8080/api/users/1
 */
 public class WebServerWithFilterBasedSecurityDemo {
 

@@ -24,14 +24,13 @@
 <body>
     <div>
         <h4>Добавить пользователя</h4>
-        <input id="userNameTextBox" placeholder="Имя" type="text"> 
-        <input id="userLoginTextBox" placeholder="Логин" type="text">
+        <input id="userNameTextBox" placeholder="Имя" type="text"> <input id="userLoginTextBox" placeholder="Логин" type="text">
         <input id="userPasswordTextBox" placeholder="Пароль" type="text">
         <button onclick="addUser()">Добавить</button>
     </div>
     <div>
-        <h4>Список пользователей</h4>
-        <table style="width: 400px" border="1">
+        <h4>Пользователи</h4>
+        <table style="width: 400px">
             <thead>
                 <tr>
                     <td style="width: 50px">Id</td>
@@ -40,7 +39,7 @@
                     <td style="width: 100px">Пароль</td>
                 </tr>
             </thead>
-            <tbody id="userDataContainer">
+            <tbody>
                 <#list users as user>
                 <tr>
                     <td>${user.id}</td>
