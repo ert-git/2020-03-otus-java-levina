@@ -46,12 +46,6 @@ public class UserDaoHibernate implements UserDao {
         return Optional.empty();
     }
 
-    private void putCached(long id, User user) {
-        if (cache != null && user != null) {
-            cache.put(String.valueOf(id), user);
-        }
-    }
-
     @Override
     public long insertUser(User user) {
         DatabaseSessionHibernate currentSession = sessionManager.getCurrentSession();
@@ -116,5 +110,12 @@ public class UserDaoHibernate implements UserDao {
     @Override
     public SessionManager getSessionManager() {
         return sessionManager;
+    }
+    
+
+    private void putCached(long id, User user) {
+        if (cache != null && user != null) {
+            cache.put(String.valueOf(id), user);
+        }
     }
 }
