@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import ru.otus.helpers.FileSystemHelper;
 import ru.otus.services.DbServiceUser;
 import ru.otus.services.TemplateProcessor;
+import ru.otus.servlet.UserApiServlet;
 import ru.otus.servlet.UsersApiServlet;
 import ru.otus.servlet.UsersServlet;
 
@@ -78,7 +79,8 @@ public class UsersWebServerSimple implements UsersWebServer {
     private ServletContextHandler createServletContextHandler() {
         ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
         servletContextHandler.addServlet(new ServletHolder(new UsersServlet(templateProcessor, userService)), "/users");
-        servletContextHandler.addServlet(new ServletHolder(new UsersApiServlet(userService, gson)), "/api/users/*");
+        servletContextHandler.addServlet(new ServletHolder(new UsersApiServlet(userService, gson)), "/api/users");
+        servletContextHandler.addServlet(new ServletHolder(new UserApiServlet(userService, gson)), "/api/users/*");
         return servletContextHandler;
     }
 }
