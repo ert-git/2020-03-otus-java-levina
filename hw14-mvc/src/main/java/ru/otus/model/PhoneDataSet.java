@@ -31,7 +31,7 @@ public class PhoneDataSet {
     @Column
     private String number;
     
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private User user;
 
     public PhoneDataSet(String number, User user) {
