@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Edit user</title>
+</head>
+<body>
+
+  <form th:action="@{/user/edit}" th:object="${user}" th:method="post" accept-charset="utf-8">
+    <h1>New User:</h1>
+
+    <div>
+      Name: <input name="name" type="text" th:value="${user.name}" />
+    </div>
+    <div>
+      Login: <input name="login" type="text" th:value="${user.login}" />
+    </div>
+    <div>
+      Password: <input name="password" type="text" th:value="${user.password}" />
+    </div>
+
+    <div class="row">
+      <button type="submit">Save</button>
+    </div>
+  </form>
+
+</body>
+</html>
